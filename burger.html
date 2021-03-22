@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<center>
+    Выбирите размер:
+    <div id="burger-min">
+        <img onclick="burger.setSize('min');" src="img\burger-min.jpg" width="350" height="250" alt="Маленький бургер">
+    </div>
+    <div id="burger-max">
+        <img onclick="burger.setSize('max');" src="img\burger-max.jpg" width="350" height="250" alt="Большой бургер">
+    </div>
+    <div id="options" style="display: none">
+        <select onchange="burger.setOptions(this.options[this.selectedIndex].value);" size="1">
+            <option selected disabled>Выбирите начинку</option>
+            <option value="cheese">С сыром</option>
+            <option value="salad">С салатом</option>
+            <option value="potato">С картофелем</option>
+        </select>
+    </div>
+
+    <div id="dop" style="display: none">
+        <input onclick='burger.setDop1(this);' type="checkbox" name="withPaprika" value="withPaprika">посыпать приправой<Br>
+        <input onclick='burger.setDop2(this);' type="checkbox" name="withMayo" value="withMayo">полить майонезом<Br>
+    </div>
+
+    <div id="totalPrice" style="display: none">
+    </div>
+
+    <div id="totalColory" style="display: none">
+    </div>
+
+</center>
+</body>
+<script>
+
+    //можно было скопипастить с https://www.cyberforum.ru/javascript-beginners/thread2356173.html, но решил по своему
+
+    /*
+    Напишите программу, рассчитывающую стоимость и калорийность гамбургера. Можно использовать примерную архитектуру класса из методички, но можно использовать и свою.
+
+    # Маленький (50 рублей, 20 калорий).
+    # Большой (100 рублей, 40 калорий).
+
+    ## Гамбургер может быть с одним из нескольких видов начинок (обязательно):
+    ## С сыром (+10 рублей, +20 калорий).
+    ## С салатом (+20 рублей, +5 калорий).
+    ## С картофелем (+15 рублей, +10 калорий).
+
+    ### Дополнительно гамбургер можно посыпать приправой (+15 рублей, +0 калорий)
+    ### полить майонезом (+20 рублей, +5 калорий).
+    */
+
+    class burgers {
+        constructor(size = null, options = null, withPaprika = false, withMayo = false) {
+            this.size = size;
+            this.options = options;
+            this.withPaprika = withPaprika;
+            this.withMayo = withMayo;
+            this.price = 0;
+            this.calory = 0;
+        }
+
+        //Вывод цены и калорий
+        getTotal() {
+            let price = this.price;
+            let calory = this.calory;
+
+            if (this.withPaprika) {
+                price += 15;
+            }
+
+            if (this.withMayo) {
+                price += 20;
+                calory += 5;
+            }
+
+            document.getElementById('totalPrice').style.display = 'block';
+            document.getElementById('totalColory').style.display = 'block';
+            document.getElementById('totalPrice').innerText = 'Цена: ' + price + ' р';
+            document.getElementById('totalColory').innerText = 'Калорийность: ' + calory + ' калорий';
+        }
+
+        //Выбор размера
+        setSize(size) {
+            this.size = size;
+            if (size == 'max') {
+                document.getElementById('burger-min').style.display = 'none';
+                this.price = 100;
+                this.calory = 40;
+            }
+            if (size == 'min') {
+                document.getElementById('burger-max').style.display = 'none';
+                this.price = 50;
+                this.calory = 20;
+            }
+            document.getElementById('options').style.display = 'block';
+        }
+
+        //Выбор содержимого
+        setOptions(options) {
+            let price = 0;
+            let calory = 0;
+
+            if (burger.size == 'min') {
+                price = 50;
+                calory = 20;
+            } else {
+                price = 100;
+                calory = 40;
+            }
+
+            if (options == 'cheese') {
+                this.price = price + 10;
+                this.calory = calory + 20;
+            }
+            if (options == 'salad') {
+                this.price = price + 20;
+                this.calory = calory + 5;
+            }
+            if (options == 'potato') {
+                this.price = price + 15;
+                this.calory = calory + 10;
+            }
+
+            document.getElementById('dop').style.display = 'block';
+            this.getTotal();
+        }
+
+        setDop1(chek) {
+            if (chek.checked) {
+                this.withPaprika = true;
+            } else {
+                this.withPaprika = false;
+            }
+            this.getTotal();
+        }
+
+        setDop2(chek) {
+            if (chek.checked) {
+                this.withMayo = true;
+            } else {
+                this.withMayo = false;
+            }
+            this.getTotal();
+        }
+    }
+
+    let burger = new burgers();
+
+</script>
+</html>
