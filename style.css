@@ -1,0 +1,129 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.cart-button {
+    position: absolute;
+    width: 150px;
+    right: 50px;
+    top: 50px;
+    border-radius: 10px;
+    color: white;
+    background: grey;
+    font-size: 25px;
+    border: none;
+}
+
+.menu-main {
+    list-style: none;
+    margin: 40px 0 5px;
+    padding: 25px 0 5px;
+    text-align: center;
+    background: white;
+}
+.menu-main li {display: inline-block;}
+.menu-main li:after {
+    content: "|";
+    color: #606060;
+    display: inline-block;
+    vertical-align:top;
+}
+.menu-main li:last-child:after {content: none;}
+.menu-main a {
+    text-decoration: none;
+    font-family: 'Ubuntu Condensed', sans-serif;
+    letter-spacing: 2px;
+    position: relative;
+    padding-bottom: 20px;
+    margin: 0 34px 0 30px;
+    font-size: 17px;
+    text-transform: uppercase;
+    display: inline-block;
+    transition: color .2s;
+}
+.menu-main a, .menu-main a:visited {color: #9d999d;}
+.menu-main a.current, .menu-main a:hover{color: #feb386;}
+.menu-main a:before,
+.menu-main a:after {
+    content: "";
+    position: absolute;
+    height: 4px;
+    top: auto;
+    right: 50%;
+    bottom: -5px;
+    left: 50%;
+    background: #feb386;
+    transition: .8s;
+}
+.menu-main a:hover:before, .menu-main .current:before {left: 0;}
+.menu-main a:hover:after, .menu-main .current:after {right: 0;}
+@media (max-width: 550px) {
+    .menu-main {padding-top: 0;}
+    .menu-main li {display: block;}
+    .menu-main li:after {content: none;}
+    .menu-main a {
+        padding: 25px 0 20px;
+        margin: 0 30px;
+    }
+}
+
+
+.goods-list {
+    display: flex;
+    justify-content: space-between;
+}
+
+.goods-item{
+    text-align: center;
+    align: bottom;
+    transition: 1s;
+    width: 200px;
+    height: 250px;
+    border: grey 1px solid;
+    margin: 20px;
+    border-radius: 15px;
+}
+
+.form {
+    margin:100px;
+}
+
+
+input {
+    margin:20px;
+	display: block;
+    width: 80%;
+}
+
+textarea {
+	margin:20px;
+    display: block;
+    width: 80%;
+	height:50px
+}
+
+button {
+	margin:20px;
+    display: block;
+    width: 80%;
+}
+
+div.error {
+    display: none;
+    margin: 20px;
+    color: red;
+}
+
+.done_val input,
+.done_val textarea {
+    border: black solid 1px;
+}
+.error_val input,
+.error_val textarea {
+    position: relative;
+    border: red solid 1px;
+}
+.error_val > div.error {
+    display: block;
+}

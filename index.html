@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>eShop</title>
+    <link href="style.css" rel="stylesheet">
+
+</head>
+<body>
+<header>
+<!--
+    <ul class="menu-main">
+        <a href="#">
+            <li>Меню1</li>
+        </a>
+        <a href="#">
+            <li>Меню2</li>
+        </a>
+        <a href="#">
+            <li>Меню3</li>
+        </a>
+        <a href="#">
+            <li>Меню4</li>
+        </a>
+    </ul>
+    <button class="cart-button" onclick="cart.render();">Корзина <span id="basketCount"></span></button>
+-->
+</header>
+<main class="container">
+    <aside>
+        <h1>Input</h1>
+        <textarea class="regexp" id="Input"></textarea>
+        <h1>Output</h1>
+        <textarea class="regexp-out" id="output" readonly></textarea>
+    </aside>
+	
+	<div class="form">
+        <label id="name">
+            <input type="text" name="name" placeholder="Имя">
+            <div class="error">Имя только буквы</div>
+        </label>
+        <label id="phone">
+            <input type="tel" name="phone" placeholder="+7(000)000-00-00">
+            <div class="error">Телефон формата: +7(000)000-00-00</div>
+        </label>
+        <label id="email">
+            <input type="email" name="email" placeholder="my*mail@mail.ru">
+            <div class="error">Емайл формата my*mail@mail.ru</div>
+        </label>
+        <label id="message">
+            <textarea name="message" placeholder="Текст произвольный"></textarea>
+            <div class="error">Текст произвольный</div>
+        </label>
+        <button class="button">Отправить</button>
+    </div>	
+	
+<!--
+    <div class="goods-list"></div>
+	<div class="goods-total"></div>
+-->
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
