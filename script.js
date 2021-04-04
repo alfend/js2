@@ -1,46 +1,109 @@
-function replaceRegxp() {
-    let str = document.getElementById('Input').value;
-    let newstr = str.replace(RegExp('\'', 'g'), '"');
-	//обратно для опострофа в буквах
-    newstr = newstr.replace(/\b\"\b/g, '\'');
-    document.getElementById('output').value = newstr;
+const app = new Vue({
+    el: '#app',
+    data: {
+        goods: [],
+        filteredGoods: [],
+        cartGoods: [],
+        searchLine: '',
+        isVisibleCart: false
+    },
+    methods: {
+		makeGETRequest(url, callback) {
+		return new Promise((resolve, reject) => {
+			let xhr = window.XMLHttpRequest ? new window.XMLHttpRequest() : new window.ActiveXObject;
+			xhr.open("GET", url, true);
+			xhr.onload = () => resolve(callback(xhr.responseText));
+			xhr.onerror = () => reject(xhr.statusText);
+			xhr.send();
+		  });
+		},
+		addToBasket(id) {
+			let toBasket;
+			list.goods.forEach(function(item) {
+				if(id == item.id) {
+					toBasket = {
+						id: item.id,
+						title: item.title,
+						price: item.price,
+					}
+				}
+			});
+			this.cartGoods.push(toBasket);
+			this.basketCount();
+		},
+		deleteFromBasket(id) {
+			let getIdElemen;
+			this.cartGoods.forEach(function(item, i) {
+				let thisId = item.id;
+				if(id == thisId) {
+					getIdElemen = i;
+				}            
+			});
+			this.cartGoods.splice(getIdElemen, 1);
+			this.render();
+			this.basketCount();
+		},
+		basketCount() {
+			let count = this.cartGoods.length;
+			document.getElementById('basketCount').innerHTML = ' (' + count + ')';
+		},
+		calcAllGoods() {
+			let totalPrice = 0;
+			this.cartGoods.forEach((good) => {
+				if (good.price !== undefined) {
+					totalPrice += good.price;
+				}
+			});
+			let totalGoodsAnswer = "Общая сумма товаров в корзине: $" + totalPrice;
+			document.querySelector('.goods-total').innerHTML = totalGoodsAnswer;
+		},
+		viewCart() {
+			switch(this.isVisibleCart) {
+				case(false): {
+					this.isVisibleCart = true;
+					break;
+				}
+				case(true): {
+					this.isVisibleCart = false;
+					break;
+				}
+			}
+		},
+		render() {
+			let readHtml = '';
+			this.cartGoods.forEach((good) => {
+				const goodItem = new BasketItem(good.id, good.title, good.price);
+				readHtml += goodItem.render();
+			})
+			document.querySelector('.goods-list').innerHTML = readHtml;
+			this.calcAllGoods();
+		},
+		 filterGoods() {
+				let regexp = new RegExp(this.searchLine, 'i');
+				this.filteredGoods = this.goods.filter(good => regexp.test(good.title));
+		 }
+	},
+    async created() {
+        try {
+            this.goods = await this.makeGETRequest('response.json');
+            this.filteredGoods = this.goods;
+        } catch(err) {
+            console.error(err);
+        }
+    },
+    mounted() {
+        this.calcAllGoods();
+    }	 
+		
+})
+
+
+function addBasket(event) {
+    app.addToBasket(event.target.id);
 }
-document.getElementById('Input').addEventListener("keyup", replaceRegxp);
-
-function valideForm() {
-    var regexp_name = /^[A-Za-zА-Яа-яё]+$/g,
-        regexp_email = /^([a-z0-9_\.-]+)@([a-z0-9_\.-]+)\.([a-z\.]{2,3})$/,
-        regexp_phone = /^\+\d{1,3}\s?\(\d{3}\)\s?\d{3}(-\d{2}){2}$/,
-        regexp_message = /[a-zа-яё0-9]/;
-
-    let name = document.getElementsByName('name')[0].value,
-        email = document.getElementsByName('email')[0].value,
-        phone = document.getElementsByName('phone')[0].value,
-        message = document.getElementsByName('message')[0].value;
-
-    // Проверяем имя
-    if(regexp_name.test(name)) {
-        document.getElementById('name').className = 'done_val';
-    } else {
-        document.getElementById('name').className = 'error_val';
-    }
-    // Проверяем телефон
-    if(regexp_phone.test(phone)) {
-        document.getElementById('phone').className = 'done_val';
-    } else {
-        document.getElementById('phone').className = 'error_val';
-    }
-    // Проверяем email
-    if(regexp_email.test(email)) {
-        document.getElementById('email').className = 'done_val';
-    } else {
-        document.getElementById('email').className = 'error_val';
-    }
-    // Проверяем сообщение
-    if(regexp_message.test(message)) {
-        document.getElementById('message').className = 'done_val';
-    } else {
-        document.getElementById('message').className = 'error_val';
-    }
+function deleteItem(event) {
+    app.deleteFromBasket(event.target.id);
 }
-document.querySelector('.button').addEventListener("click", valideForm);
+
+
+list.fetchGoods('response.json');
