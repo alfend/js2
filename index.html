@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eShop</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="vue.js"></script>
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <div id="app">
+        <header>
+		
+		<search></search>
+		<button v-on:click="filterGoods()">Поиск</button>
+		<ul class="menu-main">
+			<a href="#">
+				<li>Меню1</li>
+			</a>
+			<a href="#">
+				<li>Меню2</li>
+			</a>
+			<a href="#">
+				<li>Меню3</li>
+			</a>
+			<a href="#">
+				<li>Меню4</li>
+			</a>
+		</ul>
+		
+		<button class="cart-button" v-bind:class="{activebutton: isVisibleCart}" v-on:click="viewCart">Корзина<span>{{totalPrice}}</span></button>
+        </header>
+        <main class="container">
+            <goods-list :goods="filteredGoods">
+                <template v-slot:title><h2>Товары в продаже</h2></template>
+                <template v-slot:nothing v-if="filteredGoods.length == 0"><h3 class="goods-null">Нет данных / Товары не найдены</h3></template>
+            </goods-list>
+
+            <basket-list :goods="basketGoods" v-bind:class="{ active: isVisibleCart }">
+                <template v-slot:title><h2>Корзина</h2></template>
+                <template v-slot:totalCart><small class="totalCart">{{totalMessage}}</small></template>
+            </basket-list>
+        </main>
+    </div>
+</body>
+</html>
